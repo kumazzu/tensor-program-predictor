@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: tvm
+Version: 0.8.dev0
+Summary: TVM: An End to End Tensor IR/DSL Stack for Deep Learning Systems
+Home-page: https://github.com/apache/tvm
+Provides-Extra: importer-caffe2
+Provides-Extra: importer-coreml
+Provides-Extra: importer-darknet
+Provides-Extra: importer-keras
+Provides-Extra: importer-onnx
+Provides-Extra: importer-pytorch
+Provides-Extra: importer-tensorflow
+Provides-Extra: importer-tflite
+Provides-Extra: tvmc
+Provides-Extra: xgboost
+Provides-Extra: dev
+Provides-Extra: all-prod
