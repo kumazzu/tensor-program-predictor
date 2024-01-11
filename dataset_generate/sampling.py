@@ -23,16 +23,7 @@ parser.add_argument(
     choices=["NCHW", "NHWC"],
     help="layout of input and operation",
 )
-# parser.add_argument(
-#     "-p", "--prior_based_sampling", action="store_true", help="use prior based task sampling?"
-# )
-# parser.add_argument(
-#     "-e",
-#     "--exploration_based_sampling",
-#     action="store_true",
-#     help="use exploration based code sampling?",
-# )
-# np.random.seed(np.random.randint(10000000))
+
 opt = parser.parse_args()
 save_dir = f"{os.path.dirname(os.path.realpath(__file__))}"
 
@@ -89,10 +80,9 @@ def tune_tasks(
         os.makedirs(f"{opt.save_dir}/{opt.task}", exist_ok=True)
 
         print(f"task : {tsk.name} space {len(tsk.config_space)}")
-        # create tuner
 
         tsk_trial = min(n_trial, len(tsk.config_space))
-        # if opt.prior_based_sampling:
+
         tuner_obj = XGBTuner(
             tsk,
             feature_type="curve",
@@ -100,9 +90,7 @@ def tune_tasks(
             plan_size=opt.n_parallel,
             optimizer="sa",
         )
-        # tuner_obj = GATuner(tsk, pop_size=256)
-        # else:
-        #     tuner_obj = RandomTuner(tsk, (0, tsk_trial))
+
         cb = [
             autotvm.callback.progress_bar(tsk_trial, prefix=prefix),
             autotvm.callback.log_to_file(f"{save_dir}/{opt.task}/{model_name}.log"),
@@ -124,8 +112,8 @@ def tune_and_evaluate(tuning_opt):
     # extract workloads from relay program
     try:
         print("Extract tasks...")
-        tasks = utils.get_random_data(
-            save_dir, 16, False, opt.batch, opt.layout
+        tasks = utils.get_sampling_tasks(
+            save_dir, 20, opt.batch, opt.layout
         )
         print(tasks)
         # run tuning tasks
